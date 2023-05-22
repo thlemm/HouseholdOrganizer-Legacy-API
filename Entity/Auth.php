@@ -44,12 +44,11 @@ class Auth extends BaseEntity
       $this->password = $row['password'];
     } else {
       $this->password = false;
-    } 
+    }
   }
 
   public function createAuthToken(){
     $this->token = bin2hex(random_bytes(32));
-    // $this->token = 'super_geheimes_token';
 
     $query = "UPDATE ". $this->table ." SET `token` = '".$this->token."' WHERE `username` = '".$this->username."';";
     $stmt = $this->conn->prepare($query);

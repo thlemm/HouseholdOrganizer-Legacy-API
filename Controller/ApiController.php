@@ -23,10 +23,10 @@ abstract class ApiController
 		// Token prüfen
 		$split = [];
 
-    $requestMethod = $_SERVER['REQUEST_METHOD'];
-    if ($requestMethod == 'OPTIONS') {
-      return;
-    }
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
+        if ($requestMethod == 'OPTIONS') {
+          return;
+        }
 
 		// Wenn der Server das für uns auftrennt.
 		if (isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
@@ -48,13 +48,12 @@ abstract class ApiController
 		}
 
 		if (isset($split[1])) {
-      $token = trim($split[1], '"');
-      $result = $this->validateToken($token);
-			if ($result == 1) {
-				return;
-			}
+            $token = trim($split[1], '"');
+            $result = $this->validateToken($token);
+            if ($result == 1) {
+                return;
+            }
 		}
-
 		throw new ApiException('access denied', ApiException::AUTHENTICATION_FAILED);
 	}
 
@@ -94,39 +93,38 @@ abstract class ApiController
 
 		throw new ApiException('access denied', ApiException::AUTHENTICATION_FAILED);
   }
-  
-  /**
+
+    /**
 	 * @throws ApiException
-	 */
-	private function checkHostName()
-	{
-		$whiteList = ['localhost'];
+	*/
+    private function checkHostName() {
+        $whiteList = ['localhost'];
 
-		$ip = $_SERVER['SERVER_NAME'];
+        $ip = $_SERVER['SERVER_NAME'];
 
-		foreach ($whiteList as $allowed) {
-			if ($ip == $allowed) {
-				// Exakte Übereinstimmung, direkt fertig.
-				return;
-			} 
-		}
+        foreach ($whiteList as $allowed) {
+            if ($ip == $allowed) {
+                // Exakte Übereinstimmung, direkt fertig.
+                return;
+            }
+        }
 
-		throw new ApiException('access denied', ApiException::AUTHENTICATION_FAILED);
-	}
+        throw new ApiException('access denied', ApiException::AUTHENTICATION_FAILED);
+    }
 
-  /**
+    /**
 	 * @param string $token
 	 *
 	 * @return array
-	 */
-  private function validateToken($token){
-    // Instantiate DB & connect
-    $database = new Database();
-    $db = $database->connect();
-    $query = "SELECT EXISTS(SELECT * FROM `catalog_users` WHERE `token` = '".$token."' AND `timestamp` > (NOW() - INTERVAL 120 MINUTE))  AS val;";
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-    $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-    return $result['val'];
-  }
+    */
+    private function validateToken($token) {
+        // Instantiate DB & connect
+        $database = new Database();
+        $db = $database->connect();
+        $query = "SELECT EXISTS(SELECT * FROM `catalog_users` WHERE `token` = '".$token."' AND `timestamp` > (NOW() - INTERVAL 120 MINUTE))  AS val;";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result['val'];
+    }
 }

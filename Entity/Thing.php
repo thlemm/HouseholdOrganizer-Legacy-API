@@ -54,7 +54,7 @@ class Thing extends BaseEntity {
   public function read_user(){
     // Create query
     $query = 'SELECT `thing_id`, `tags`, `type`, `room`, `location`, `box_id`, `picture` FROM '. $this->table .' WHERE `'.$this->username.'` = 1  ORDER BY `thing_id` ASC;';
-      
+
     //Prepare statement
     $stmt = $this->conn->prepare($query);
 
@@ -134,31 +134,31 @@ class Thing extends BaseEntity {
     // Create Query
     $query = 'UPDATE ' .
       $this->table . '
-    SET
-      name = :name
-      WHERE
-      id = :id';
+        SET
+          name = :name
+          WHERE
+          id = :id';
 
-  // Prepare Statement
-  $stmt = $this->conn->prepare($query);
+      // Prepare Statement
+      $stmt = $this->conn->prepare($query);
 
-  // Clean data
-  $this->name = htmlspecialchars(strip_tags($this->name));
-  $this->id = htmlspecialchars(strip_tags($this->id));
+      // Clean data
+      $this->name = htmlspecialchars(strip_tags($this->name));
+      $this->id = htmlspecialchars(strip_tags($this->id));
 
-  // Bind data
-  $stmt-> bindParam(':name', $this->name);
-  $stmt-> bindParam(':id', $this->id);
+      // Bind data
+      $stmt-> bindParam(':name', $this->name);
+      $stmt-> bindParam(':id', $this->id);
 
-  // Execute query
-  if($stmt->execute()) {
-    return true;
-  }
+      // Execute query
+      if($stmt->execute()) {
+        return true;
+      }
 
-  // Print error if something goes wrong
-  printf("Error: $s.\n", $stmt->error);
+      // Print error if something goes wrong
+      printf("Error: $s.\n", $stmt->error);
 
-  return false;
+      return false;
   }
 
   // Delete Category
